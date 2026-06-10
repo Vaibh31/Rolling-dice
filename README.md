@@ -1,6 +1,8 @@
 # 🎲 Roll the Dice
 
-A visually rich, interactive two-dice roller built with pure HTML, CSS, and JavaScript. Features fully 3D animated cubes with correct pip layouts, particle effects on landing, and keyboard support — all in a single self-contained file.
+A visually rich, interactive two-dice roller built with pure HTML, CSS, and JavaScript. Features fully 3D animated cubes with correct pip layouts, particle effects on landing, and keyboard support.
+
+🔗 **Live Demo:** [https://vaibh31.github.io/Rolling-dice/](https://vaibh31.github.io/Rolling-dice/)
 
 ---
 
@@ -29,11 +31,10 @@ A visually rich, interactive two-dice roller built with pure HTML, CSS, and Java
 
 ## File Structure
 
-    dice-roller/
-    ├── dice-roller.html   # Main application — all HTML, CSS, and JS in one file
-    └── script.js          # External script reference (currently empty; logic is inline)
-
-> **Note:** `script.js` is linked via `<script src="script.js">` but is currently empty. All game logic lives in the inline `<script>` block at the bottom of `dice-roller.html`.
+    Rolling-dice/
+    ├── index.html   # Main application — HTML + CSS
+    ├── script.js    # All game logic and animations
+    └── README.md
 
 ---
 
@@ -42,18 +43,12 @@ A visually rich, interactive two-dice roller built with pure HTML, CSS, and Java
 No build step or dependencies required. Just open the file in a browser.
 
 ```bash
-# Clone or download the project, then simply open:
-open dice-roller.html
+# Clone the repo
+git clone https://github.com/Vaibh31/Rolling-dice.git
+
+# Open in browser
+open index.html
 ```
-
-Or serve it locally:
-
-```bash
-npx serve .
-# then visit http://localhost:3000/dice-roller.html
-```
-
----
 
 ## Usage
 
