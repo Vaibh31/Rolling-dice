@@ -38,17 +38,6 @@ A visually rich, interactive two-dice roller built with pure HTML, CSS, and Java
 
 ---
 
-## Getting Started
-
-No build step or dependencies required. Just open the file in a browser.
-
-```bash
-# Clone the repo
-git clone https://github.com/Vaibh31/Rolling-dice.git
-
-# Open in browser
-open index.html
-```
 
 ## Usage
 
