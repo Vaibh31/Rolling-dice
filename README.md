@@ -28,9 +28,11 @@ A visually rich, interactive two-dice roller built with pure HTML, CSS, and Java
 ---
 
 ## File Structure
-dice-roller/
-├── dice-roller.html   # Main application — all HTML, CSS, and JS in one file
-└── script.js          # External script reference (currently empty; logic is inline)
+
+    dice-roller/
+    ├── dice-roller.html   # Main application — all HTML, CSS, and JS in one file
+    └── script.js          # External script reference (currently empty; logic is inline)
+
 > **Note:** `script.js` is linked via `<script src="script.js">` but is currently empty. All game logic lives in the inline `<script>` block at the bottom of `dice-roller.html`.
 
 ---
