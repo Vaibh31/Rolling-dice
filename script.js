@@ -1,10 +1,10 @@
 
   const faceOrientations = {
     1: { rx: -20,  ry: 30  },
-    2: { rx: -110, ry: 30  },
+    2: { rx: 70,   ry: 30  },
     3: { rx: -20,  ry: -60 },
     4: { rx: -20,  ry: 120 },
-    5: { rx: 70,   ry: 30  },
+    5: { rx: -110, ry: 30  },
     6: { rx: -20,  ry: 210 },
   };
 
@@ -37,7 +37,7 @@
       cube.classList.add('landing');
       shadow.style.transform = 'scale(1)';
       shadow.style.opacity   = '1';
-      spawnParticles(scenes[idx]);
+      spawnParticles(scenes[idx], idx);
 
       setTimeout(() => {
         resEl.textContent = result;
@@ -46,7 +46,6 @@
 
         setTimeout(() => {
           cube.classList.remove('landing');
-          // Keep the die showing its rolled face — lock the transform into the idle animation via CSS var
           cube.style.setProperty('--idle-rx', orient.rx + 'deg');
           cube.style.setProperty('--idle-ry', orient.ry + 'deg');
           cube.style.transform = '';
@@ -116,18 +115,27 @@
     sumEl.textContent = '—';
   }
 
-  function spawnParticles(sceneEl) {
+  function spawnParticles(sceneEl, idx) {
     const rect = sceneEl.getBoundingClientRect();
     const cx = rect.left + rect.width  / 2;
     const cy = rect.top  + rect.height / 2;
-    for (let i = 0; i < 10; i++) {
+    
+    const style = getComputedStyle(document.body);
+    const diePrefix = idx === 0 ? '--die1' : '--die2';
+    const accentColor = idx === 0 ? '--accent-1' : '--accent-2';
+    const color1 = style.getPropertyValue(`${diePrefix}-dot`).trim() || '#ffffff';
+    const color2 = style.getPropertyValue(accentColor).trim() || '#ffffff';
+    const glowColor = style.getPropertyValue(`${diePrefix}-dot-glow`).trim() || 'rgba(255,255,255,0.6)';
+
+    for (let i = 0; i < 16; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
       document.body.appendChild(p);
-      const sz = 4 + Math.random() * 5;
-      p.style.cssText = `width:${sz}px;height:${sz}px;left:${cx}px;top:${cy}px;`;
-      const angle = (Math.PI * 2 * i / 10) + (Math.random() - 0.5) * 0.5;
-      const dist  = 50 + Math.random() * 70;
+      const sz = 3 + Math.random() * 6;
+      const color = Math.random() > 0.5 ? color1 : color2;
+      p.style.cssText = `width:${sz}px;height:${sz}px;left:${cx}px;top:${cy}px;background:${color};box-shadow:0 0 8px ${color}, 0 0 15px ${glowColor};`;
+      const angle = (Math.PI * 2 * i / 16) + (Math.random() - 0.5) * 0.5;
+      const dist  = 50 + Math.random() * 80;
       const dx = Math.cos(angle) * dist, dy = Math.sin(angle) * dist;
       p.animate([
         { transform:'translate(-50%,-50%) scale(1)',opacity:1 },
@@ -137,8 +145,37 @@
     }
   }
 
+  // Theme Switching Logic
+  const themeBtns = document.querySelectorAll('.theme-btn');
+  themeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.getAttribute('data-theme');
+      
+      // Remove all theme classes
+      document.body.className = '';
+      if (theme !== 'cyber') {
+        document.body.classList.add(`theme-${theme}`);
+      }
+      
+      // Update active state in UI
+      themeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      // Save user preference
+      localStorage.setItem('dice-theme', theme);
+    });
+  });
+
+  // Load saved theme
+  const savedTheme = localStorage.getItem('dice-theme');
+  if (savedTheme) {
+    const targetBtn = document.querySelector(`.theme-btn[data-theme="${savedTheme}"]`);
+    if (targetBtn) {
+      targetBtn.click();
+    }
+  }
+
   document.addEventListener('keydown', e => {
     if (e.code === 'Space' || e.code === 'Enter') rollBoth();
     if (e.code === 'KeyR') resetAll();
   });
-
