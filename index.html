@@ -4,91 +4,286 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roll the Dice</title>
+<meta name="description" content="A beautiful 3D dice roller with stunning animations">
 
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* Default Theme: Cyber Ice (Teal & Blue) */
   :root {
-    --bg: #0a0a12;
-    --accent: #f0e040;
-    --muted: #555570;
+    --bg-deep: #040814;
+    --bg-mid: #0b1129;
+    --accent-1: #00f0ff; /* Neon Cyan */
+    --accent-2: #8b5cf6; /* Violet */
+    --accent-3: #00f09a; /* Ice Mint */
+    --glow-1: rgba(0,240,255,0.6);
+    --glow-2: rgba(139,92,246,0.5);
+    --muted: rgba(0,240,255,0.25);
+    --text: #ffffff;
+    
+    /* Common dot settings */
+    --dot-light: #ffffff;
+
+    /* Die 1 (Left Die): Cyan with Gold/Amber dots */
+    --die1-bg-start: rgba(0,240,255,0.25);
+    --die1-bg-end: rgba(0,114,255,0.12);
+    --die1-border: rgba(0,240,255,0.55);
+    --die1-dot: #ffd700;
+    --die1-dot-dark: #b8860b;
+    --die1-dot-glow: #ffd700;
+    --die1-dot-glow-subtle: rgba(255,215,0,0.3);
+
+    /* Die 2 (Right Die): Violet with Teal/Mint dots */
+    --die2-bg-start: rgba(139,92,246,0.25);
+    --die2-bg-end: rgba(76,29,149,0.12);
+    --die2-border: rgba(139,92,246,0.5);
+    --die2-dot: #00f09a;
+    --die2-dot-dark: #008050;
+    --die2-dot-glow: #00f09a;
+    --die2-dot-glow-subtle: rgba(0,240,154,0.3);
+
+    --orb-1-bg: rgba(0,240,255,0.14);
+    --orb-2-bg: rgba(139,92,246,0.12);
+    --orb-3-bg: rgba(0,240,154,0.08);
+  }
+
+  /* Theme: Solar Gold & Obsidian */
+  body.theme-gold {
+    --bg-deep: #080705;
+    --bg-mid: #14110b;
+    --accent-1: #ffd700; /* Gold */
+    --accent-2: #ff8c00; /* Orange */
+    --accent-3: #ffe4b5; /* Pale Gold */
+    --glow-1: rgba(255,215,0,0.6);
+    --glow-2: rgba(255,140,0,0.5);
+    --muted: rgba(255,215,0,0.25);
+    --text: #fffdf5;
+
+    /* Die 1 (Left Die): Gold with Blue dots */
+    --die1-bg-start: rgba(255,215,0,0.25);
+    --die1-bg-end: rgba(255,140,0,0.12);
+    --die1-border: rgba(255,215,0,0.55);
+    --die1-dot: #3b82f6;
+    --die1-dot-dark: #1e3a8a;
+    --die1-dot-glow: #3b82f6;
+    --die1-dot-glow-subtle: rgba(59,130,246,0.3);
+
+    /* Die 2 (Right Die): Amber/Ruby with Emerald dots */
+    --die2-bg-start: rgba(239,68,68,0.25);
+    --die2-bg-end: rgba(153,27,27,0.12);
+    --die2-border: rgba(239,68,68,0.5);
+    --die2-dot: #10b981;
+    --die2-dot-dark: #047857;
+    --die2-dot-glow: #10b981;
+    --die2-dot-glow-subtle: rgba(16,185,129,0.3);
+
+    --orb-1-bg: rgba(255,215,0,0.1);
+    --orb-2-bg: rgba(255,140,0,0.08);
+    --orb-3-bg: rgba(255,255,255,0.05);
+  }
+
+  /* Theme: Aurora Emerald & Jade */
+  body.theme-emerald {
+    --bg-deep: #030a08;
+    --bg-mid: #081a14;
+    --accent-1: #10b981; /* Emerald */
+    --accent-2: #06b6d4; /* Cyan */
+    --accent-3: #34d399; /* Mint */
+    --glow-1: rgba(16,185,129,0.6);
+    --glow-2: rgba(6,182,212,0.5);
+    --muted: rgba(16,185,129,0.25);
+    --text: #e6f7f2;
+
+    /* Die 1 (Left Die): Emerald with Gold dots */
+    --die1-bg-start: rgba(16,185,129,0.28);
+    --die1-bg-end: rgba(6,95,70,0.15);
+    --die1-border: rgba(16,185,129,0.55);
+    --die1-dot: #ffd700;
+    --die1-dot-dark: #b8860b;
+    --die1-dot-glow: #ffd700;
+    --die1-dot-glow-subtle: rgba(255,215,0,0.3);
+
+    /* Die 2 (Right Die): Cyan with Orange dots */
+    --die2-bg-start: rgba(6,182,212,0.25);
+    --die2-bg-end: rgba(21,94,117,0.12);
+    --die2-border: rgba(6,182,212,0.5);
+    --die2-dot: #ff5533;
+    --die2-dot-dark: #992200;
+    --die2-dot-glow: #ff5533;
+    --die2-dot-glow-subtle: rgba(255,85,51,0.3);
+
+    --orb-1-bg: rgba(16,185,129,0.12);
+    --orb-2-bg: rgba(6,182,212,0.1);
+    --orb-3-bg: rgba(52,211,153,0.06);
+  }
+
+  /* Theme: Cosmic Indigo */
+  body.theme-nebula {
+    --bg-deep: #050514;
+    --bg-mid: #0c0d29;
+    --accent-1: #6366f1; /* Indigo */
+    --accent-2: #3b82f6; /* Royal Blue */
+    --accent-3: #8b5cf6; /* Violet */
+    --glow-1: rgba(99,102,241,0.6);
+    --glow-2: rgba(59,130,246,0.5);
+    --muted: rgba(99,102,241,0.25);
+    --text: #f3f0ff;
+
+    /* Die 1 (Left Die): Indigo with Yellow dots */
+    --die1-bg-start: rgba(99,102,241,0.28);
+    --die1-bg-end: rgba(49,46,129,0.15);
+    --die1-border: rgba(99,102,241,0.55);
+    --die1-dot: #ffd700;
+    --die1-dot-dark: #b8860b;
+    --die1-dot-glow: #ffd700;
+    --die1-dot-glow-subtle: rgba(255,215,0,0.3);
+
+    /* Die 2 (Right Die): Blue with Lime dots */
+    --die2-bg-start: rgba(59,130,246,0.25);
+    --die2-bg-end: rgba(30,58,138,0.12);
+    --die2-border: rgba(59,130,246,0.5);
+    --die2-dot: #39ff14;
+    --die2-dot-dark: #008000;
+    --die2-dot-glow: #39ff14;
+    --die2-dot-glow-subtle: rgba(57,255,20,0.3);
+
+    --orb-1-bg: rgba(99,102,241,0.14);
+    --orb-2-bg: rgba(59,130,246,0.12);
+    --orb-3-bg: rgba(139,92,246,0.08);
   }
 
   body {
     min-height: 100vh;
-    background: var(--bg);
+    background: var(--bg-deep);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-family: 'Space Mono', monospace;
+    font-family: 'Space Grotesk', sans-serif;
     overflow: hidden;
     position: relative;
+    transition: background 0.5s ease;
   }
 
+  /* Animated gradient background */
   body::before {
     content: '';
     position: fixed; inset: 0;
-    background-image:
-      radial-gradient(1px 1px at 20% 30%, rgba(240,224,64,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 70% 20%, rgba(240,224,64,0.2) 0%, transparent 100%),
-      radial-gradient(1px 1px at 40% 80%, rgba(240,224,64,0.15) 0%, transparent 100%),
-      radial-gradient(1px 1px at 85% 60%, rgba(240,224,64,0.25) 0%, transparent 100%),
-      radial-gradient(1px 1px at 10% 70%, rgba(240,224,64,0.2) 0%, transparent 100%),
-      radial-gradient(2px 2px at 55% 45%, rgba(240,224,64,0.15) 0%, transparent 100%),
-      radial-gradient(1px 1px at 90% 85%, rgba(240,224,64,0.2) 0%, transparent 100%),
-      radial-gradient(1px 1px at 30% 50%, rgba(240,224,64,0.1) 0%, transparent 100%);
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 80%, var(--orb-1-bg) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 80% 20%, var(--orb-2-bg) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, var(--orb-3-bg) 0%, transparent 70%);
     pointer-events: none; z-index: 0;
+    animation: bgShift 10s ease-in-out infinite alternate;
   }
 
+  @keyframes bgShift {
+    0%   { filter: hue-rotate(0deg) scale(1); }
+    100% { filter: hue-rotate(15deg) scale(1.05); }
+  }
+
+  /* Subtle futuristic grid */
   body::after {
     content: '';
     position: fixed; inset: 0;
     background-image:
-      linear-gradient(rgba(240,224,64,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(240,224,64,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
     pointer-events: none; z-index: 0;
   }
 
   .container {
     position: relative; z-index: 1;
     display: flex; flex-direction: column;
-    align-items: center; gap: 28px;
+    align-items: center; gap: 32px;
   }
 
   .title {
-    font-family: 'Bebas Neue', cursive;
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    letter-spacing: 0.15em;
-    color: var(--accent);
-    text-shadow: 0 0 30px rgba(240,224,64,0.4), 0 0 60px rgba(240,224,64,0.15);
-    animation: titlePulse 3s ease-in-out infinite;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    letter-spacing: 0.04em;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px var(--glow-1));
+    animation: titleGlow 4s ease-in-out infinite;
   }
 
-  @keyframes titlePulse {
-    0%, 100% { text-shadow: 0 0 30px rgba(240,224,64,0.4), 0 0 60px rgba(240,224,64,0.15); }
-    50%       { text-shadow: 0 0 50px rgba(240,224,64,0.7), 0 0 100px rgba(240,224,64,0.3); }
+  @keyframes titleGlow {
+    0%, 100% { filter: drop-shadow(0 0 20px var(--glow-1)); }
+    50%      { filter: drop-shadow(0 0 35px var(--glow-2)) drop-shadow(0 0 60px var(--glow-1)); }
+  }
+
+  /* Theme Switcher Style */
+  .theme-switcher {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 30px;
+    padding: 6px;
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .theme-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .theme-btn:hover {
+    transform: scale(1.15);
+  }
+
+  .theme-btn.active {
+    border-color: var(--accent-2);
+    box-shadow: 0 0 12px var(--glow-2);
+  }
+
+  .theme-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: block;
   }
 
   /* Dice row */
   .dice-row {
     display: flex;
     align-items: flex-end;
-    gap: 36px;
+    gap: 40px;
   }
 
   .dice-wrap {
     display: flex; flex-direction: column;
-    align-items: center; gap: 6px;
+    align-items: center; gap: 8px;
   }
 
   .die-result {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 3rem; line-height: 1;
-    color: var(--accent);
-    text-shadow: 0 0 16px rgba(240,224,64,0.5);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 2.8rem; line-height: 1;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 12px var(--glow-1));
     opacity: 0;
     transform: scale(0.5) translateY(10px);
     transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
@@ -98,8 +293,9 @@
   .die-result.flash { animation: numFlash 0.3s ease; }
 
   .plus-sign {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 2.4rem;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 2rem;
     color: var(--muted);
     margin-bottom: 20px;
   }
@@ -109,17 +305,17 @@
     width: 150px; height: 150px;
     perspective: 600px;
     cursor: pointer;
-    filter: drop-shadow(0 20px 60px rgba(0,0,0,0.8));
+    filter: drop-shadow(0 20px 45px rgba(0,0,0,0.6));
     transition: filter 0.3s;
   }
-  .scene:hover { filter: drop-shadow(0 20px 60px rgba(240,224,64,0.3)); }
+  .scene:hover { filter: drop-shadow(0 20px 50px var(--glow-2)); }
 
   .cube {
     width: 150px; height: 150px;
     position: relative;
     transform-style: preserve-3d;
     transform: rotateX(-20deg) rotateY(30deg);
-    border-radius: 20px;
+    border-radius: 24px;
   }
 
   .cube.idle  { animation: floatIdle  4s ease-in-out infinite; }
@@ -129,18 +325,18 @@
 
   @keyframes floatIdle {
     0%,100%{ transform: rotateX(-20deg) rotateY(30deg) translateY(0px); }
-    50%    { transform: rotateX(-20deg) rotateY(30deg) translateY(-8px); }
+    50%    { transform: rotateX(-20deg) rotateY(30deg) translateY(-10px); }
   }
   @keyframes floatIdleB {
-    0%,100%{ transform: rotateX(-20deg) rotateY(30deg) translateY(-8px); }
+    0%,100%{ transform: rotateX(-20deg) rotateY(30deg) translateY(-10px); }
     50%    { transform: rotateX(-20deg) rotateY(30deg) translateY(0px); }
   }
   @keyframes floatIdleLocked {
     0%,100%{ transform: rotateX(var(--idle-rx,-20deg)) rotateY(var(--idle-ry,30deg)) translateY(0px); }
-    50%    { transform: rotateX(var(--idle-rx,-20deg)) rotateY(var(--idle-ry,30deg)) translateY(-8px); }
+    50%    { transform: rotateX(var(--idle-rx,-20deg)) rotateY(var(--idle-ry,30deg)) translateY(-10px); }
   }
   @keyframes floatIdleLockedB {
-    0%,100%{ transform: rotateX(var(--idle-rx,-20deg)) rotateY(var(--idle-ry,30deg)) translateY(-8px); }
+    0%,100%{ transform: rotateX(var(--idle-rx,-20deg)) rotateY(var(--idle-ry,30deg)) translateY(-10px); }
     50%    { transform: rotateX(var(--idle-rx,-20deg)) rotateY(var(--idle-ry,30deg)) translateY(0px); }
   }
 
@@ -164,17 +360,42 @@
   .face {
     position: absolute;
     width: 150px; height: 150px;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16162a 40%, #0d0d1a 100%);
-    border: 2px solid rgba(240,224,64,0.25);
-    border-radius: 20px;
+    border-radius: 24px;
     display: grid; place-items: center;
     overflow: hidden;
+    backdrop-filter: blur(12px);
+    box-shadow: inset 0 2px 8px rgba(255,255,255,0.05), inset 0 -2px 8px rgba(0,0,0,0.4);
+    transition: background 0.5s ease, border-color 0.5s ease;
   }
   .face::before {
     content: '';
     position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%);
-    border-radius: 18px; pointer-events: none;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 40%, rgba(255,255,255,0.02) 100%);
+    border-radius: 22px; pointer-events: none;
+  }
+
+  /* Cube 1 (Left Die) */
+  #cube1 .face {
+    background: 
+      linear-gradient(135deg, var(--die1-bg-start) 0%, var(--die1-bg-end) 100%),
+      var(--bg-mid);
+    border: 1.5px solid var(--die1-border);
+  }
+  #cube1 .dot {
+    background: radial-gradient(circle at 35% 35%, var(--dot-light), var(--die1-dot) 50%, var(--die1-dot-dark));
+    box-shadow: 0 0 8px var(--die1-dot-glow), 0 0 20px var(--die1-dot-glow-subtle), inset 0 2px 4px rgba(255,255,255,0.3);
+  }
+
+  /* Cube 2 (Right Die) */
+  #cube2 .face {
+    background: 
+      linear-gradient(135deg, var(--die2-bg-start) 0%, var(--die2-bg-end) 100%),
+      var(--bg-mid);
+    border: 1.5px solid var(--die2-border);
+  }
+  #cube2 .dot {
+    background: radial-gradient(circle at 35% 35%, var(--dot-light), var(--die2-dot) 50%, var(--die2-dot-dark));
+    box-shadow: 0 0 8px var(--die2-dot-glow), 0 0 20px var(--die2-dot-glow-subtle), inset 0 2px 4px rgba(255,255,255,0.3);
   }
 
   .face-front  { transform: translateZ(75px); }
@@ -194,35 +415,40 @@
   .dot {
     width:16px; height:16px;
     border-radius:50%;
-    background: radial-gradient(circle at 35% 35%, #fff9a0, #f0e040 40%, #c8b800);
-    box-shadow: 0 0 8px rgba(240,224,64,0.8), 0 0 16px rgba(240,224,64,0.4), inset 0 2px 4px rgba(255,255,255,0.4);
     opacity:0;
+    transition: background 0.5s ease, box-shadow 0.5s ease;
   }
   .dot.visible { opacity:1; }
 
   .shadow-ellipse {
-    width:110px; height:18px;
-    background: radial-gradient(ellipse, rgba(0,0,0,0.6) 0%, transparent 70%);
+    width:120px; height:14px;
+    background: radial-gradient(ellipse, var(--glow-1) 0%, transparent 70%);
     margin-top:-6px;
-    transition: all 0.3s;
+    filter: blur(4px);
+    transition: background 0.5s ease;
+    opacity: 0.8;
   }
-
-
 
   /* Sum */
   .sum-section {
     display: flex; flex-direction: column;
-    align-items: center; gap: 4px;
+    align-items: center; gap: 6px;
   }
   .sum-label {
-    font-size: 0.68rem; letter-spacing: 0.35em;
+    font-size: 0.72rem; letter-spacing: 0.35em;
     color: var(--muted); text-transform: uppercase;
+    font-weight: 600;
+    transition: color 0.5s ease;
   }
   .sum-value {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 5rem; line-height: 1;
-    color: var(--accent);
-    text-shadow: 0 0 30px rgba(240,224,64,0.6), 0 0 60px rgba(240,224,64,0.25);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 4.5rem; line-height: 1;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 25px var(--glow-1));
     opacity: 0;
     transform: scale(0.5) translateY(16px);
     transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
@@ -231,64 +457,130 @@
   .sum-value.show  { opacity: 1; transform: scale(1) translateY(0); }
   .sum-value.flash { animation: sumFlash 0.35s ease; }
   @keyframes sumFlash {
-    0%,100%{ text-shadow: 0 0 30px rgba(240,224,64,0.6), 0 0 60px rgba(240,224,64,0.25); }
-    50%    { text-shadow: 0 0 70px rgba(240,224,64,1), 0 0 130px rgba(240,224,64,0.5); }
+    0%,100%{ filter: drop-shadow(0 0 25px var(--glow-1)); }
+    50%    { filter: drop-shadow(0 0 60px var(--glow-2)) drop-shadow(0 0 100px var(--glow-1)); }
   }
 
   /* Buttons */
-  .btn-row { display:flex; gap:14px; align-items:center; }
+  .btn-row { display:flex; gap:16px; align-items:center; }
 
   .btn-roll-all {
-    font-family:'Bebas Neue', cursive;
-    font-size:1.4rem; letter-spacing:0.2em;
-    color:#0a0a12;
-    background: linear-gradient(135deg, #f0e040, #c8b800);
-    border:none; border-radius:10px;
-    padding:12px 34px; cursor:pointer;
-    box-shadow: 0 4px 20px rgba(240,224,64,0.35);
-    transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+    font-family:'Outfit', sans-serif;
+    font-weight:700;
+    font-size:1.1rem; letter-spacing:0.12em;
+    color:#fff;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-3), var(--accent-2));
+    background-size: 200% 200%;
+    border:none; border-radius:14px;
+    padding:14px 36px; cursor:pointer;
+    box-shadow: 0 4px 25px var(--glow-1), 0 0 60px rgba(168,85,247,0.15);
+    transition: transform 0.15s, box-shadow 0.15s, background-position 0.4s;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
   }
-  .btn-roll-all:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(240,224,64,0.5); filter:brightness(1.1); }
+  .btn-roll-all::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+  .btn-roll-all:hover::before { transform: translateX(100%); }
+  .btn-roll-all:hover { transform:translateY(-3px); box-shadow:0 8px 35px var(--glow-1), 0 0 80px rgba(168,85,247,0.25); background-position: 100% 100%; }
   .btn-roll-all:active{ transform:translateY(1px); }
 
   .btn-reset {
-    font-family:'Bebas Neue', cursive;
-    font-size:1.4rem; letter-spacing:0.2em;
-    color:var(--muted);
-    background:transparent;
-    border:1px solid var(--muted);
-    border-radius:10px;
-    padding:12px 26px; cursor:pointer;
-    transition: color 0.2s, border-color 0.2s, transform 0.15s, box-shadow 0.15s;
+    font-family:'Outfit', sans-serif;
+    font-weight:600;
+    font-size:1.1rem; letter-spacing:0.12em;
+    color: var(--text);
+    background: rgba(255,255,255,0.03);
+    border:1.5px solid var(--muted);
+    border-radius:14px;
+    padding:14px 28px; cursor:pointer;
+    transition: all 0.25s;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
   }
-  .btn-reset:hover { color:#e8e8f0; border-color:#e8e8f0; transform:translateY(-2px); box-shadow:0 4px 20px rgba(255,255,255,0.08); }
+  .btn-reset:hover { color:var(--text); border-color:var(--accent-2); background:rgba(255,255,255,0.08); transform:translateY(-3px); box-shadow:0 4px 20px var(--glow-2); }
   .btn-reset:active{ transform:translateY(1px); }
 
   .hint {
-    font-size:0.66rem; letter-spacing:0.22em;
+    font-size:0.7rem; letter-spacing:0.22em;
     color:var(--muted); text-transform:uppercase;
-    animation: hintBlink 2s ease-in-out infinite;
+    font-weight:400;
+    animation: hintBlink 2.5s ease-in-out infinite;
+    transition: color 0.5s ease;
   }
   @keyframes hintBlink {
-    0%,100%{ opacity:0.45; }
-    50%    { opacity:0.9; }
+    0%,100%{ opacity:0.35; }
+    50%    { opacity:0.8; }
   }
 
-  /* Particles */
-  .particle {
-    position:fixed; border-radius:50%;
-    background:var(--accent);
-    box-shadow:0 0 6px rgba(240,224,64,0.8);
-    pointer-events:none; z-index:99;
+  /* Ambient orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(100px);
+    transition: background 0.5s ease;
   }
-
-  @keyframes numFlash {
-    0%,100%{ text-shadow:0 0 16px rgba(240,224,64,0.5); }
-    50%    { text-shadow:0 0 50px rgba(240,224,64,1), 0 0 90px rgba(240,224,64,0.5); }
+  .orb-1 {
+    width: 300px; height: 300px;
+    background: var(--orb-1-bg);
+    top: 10%; left: -5%;
+    animation: orbFloat1 15s ease-in-out infinite;
+  }
+  .orb-2 {
+    width: 250px; height: 250px;
+    background: var(--orb-2-bg);
+    bottom: 5%; right: -5%;
+    animation: orbFloat2 12s ease-in-out infinite;
+  }
+  .orb-3 {
+    width: 200px; height: 200px;
+    background: var(--orb-3-bg);
+    top: 50%; left: 60%;
+    animation: orbFloat3 16s ease-in-out infinite;
+  }
+  @keyframes orbFloat1 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%     { transform: translate(40px, 30px) scale(1.1); }
+  }
+  @keyframes orbFloat2 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%     { transform: translate(-30px, -40px) scale(0.9); }
+  }
+  @keyframes orbFloat3 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%     { transform: translate(-20px, 20px) scale(1.05); }
   }
 </style>
 </head>
 <body>
+
+<!-- Theme Switcher -->
+<div class="theme-switcher">
+  <button class="theme-btn active" data-theme="cyber" title="Cyber Ice">
+    <span class="theme-dot" style="background: linear-gradient(135deg, #00f0ff, #0072ff)"></span>
+  </button>
+  <button class="theme-btn" data-theme="gold" title="Solar Gold">
+    <span class="theme-dot" style="background: linear-gradient(135deg, #ffd700, #ff8c00)"></span>
+  </button>
+  <button class="theme-btn" data-theme="emerald" title="Aurora Emerald">
+    <span class="theme-dot" style="background: linear-gradient(135deg, #10b981, #06b6d4)"></span>
+  </button>
+  <button class="theme-btn" data-theme="nebula" title="Cosmic Indigo">
+    <span class="theme-dot" style="background: linear-gradient(135deg, #6366f1, #8b5cf6)"></span>
+  </button>
+</div>
+
+<!-- Ambient orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
 <div class="container">
 
@@ -413,14 +705,13 @@
 
   <!-- Buttons -->
   <div class="btn-row">
-    <button class="btn-roll-all" onclick="rollBoth()">Roll Both</button>
-    <button class="btn-reset"    onclick="resetAll()">Reset</button>
+    <button class="btn-roll-all" id="btnRoll" onclick="rollBoth()">Roll Both</button>
+    <button class="btn-reset" id="btnReset" onclick="resetAll()">Reset</button>
   </div>
 
   <div class="hint">Click a die · Roll Both · or press Space</div>
 
 </div>
-
 
 <script src="script.js"></script>
 </body>
